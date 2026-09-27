@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>College Event Invitation</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef4ff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .event-box {
+            width: 80%;
+            max-width: 700px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #173b7a;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #f28c28;
+            font-size: 22px;
+        }
+
+        p {
+            font-size: 17px;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        .event-details {
+            background-color: #f7f9fc;
+            padding: 18px;
+            margin: 25px 0;
+            border-left: 5px solid #173b7a;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .event-details p {
+            margin: 10px 0;
+        }
+
+        form {
+            text-align: left;
+            margin-top: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            background-color: #173b7a;
+            color: white;
+            border: none;
+            padding: 13px;
+            margin-top: 22px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 17px;
+        }
+
+        button:hover {
+            background-color: #0f2854;
+        }
+
+        #message {
+            display: none;
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #d9f7df;
+            color: #176b2c;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="event-box">
+        <h1>Tech Club Presents</h1>
+        <h2>College Coding Workshop 2026</h2>
+
+        <p>
+            Join us for an exciting coding workshop where students can learn
+            basic web development, meet fellow learners, and build a simple project.
+        </p>
+
+        <div class="event-details">
+            <p><strong>📅 Date:</strong> 15 October 2026</p>
+            <p><strong>⏰ Time:</strong> 10:00 AM – 1:00 PM</p>
+            <p><strong>📍 Venue:</strong> Computer Lab 2, ABC College</p>
+            <p><strong>🎟 Entry:</strong> Free for all college students</p>
+        </div>
+
+        <h2>Register for the Event</h2>
+
+        <form id="registrationForm">
+            <label for="name">Student Name</label>
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter your full name"
+                required
+            >
+
+            <label for="email">College Email</label>
+            <input
+                type="email"
+                id="email"
+                placeholder="example@college.edu"
+                required
+            >
+
+            <label for="department">Department</label>
+            <select id="department" required>
+                <option value="">Select your department</option>
+                <option>Computer Science</option>
+                <option>Information Technology</option>
+                <option>Electronics</option>
+                <option>Mechanical</option>
+                <option>Civil</option>
+                <option>Other</option>
+            </select>
+
+            <button type="submit">Register Now</button>
+        </form>
+
+        <div id="message"></div>
+    </div>
+
+    <footer>
+        Organized by the Tech Club, ABC College
+    </footer>
+
+    <script>
+        const form = document.getElementById("registrationForm");
+        const message = document.getElementById("message");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const studentName = document.getElementById("name").value;
+
+            message.innerHTML =
+                "Registration successful, " + studentName +
+                "! We look forward to seeing you at the workshop.";
+
+            message.style.display = "block";
+
+            form.reset();
+        });
+    </script>
+
+</body>
+</html>
