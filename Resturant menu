@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spice Garden | Restaurant Menu</title>
+
+  <style>
+    :root {
+      --primary: #b8431d;
+      --secondary: #f6b73c;
+      --dark: #252525;
+      --light: #fffaf2;
+      --white: #ffffff;
+      --muted: #777777;
+      --green: #238636;
+      --shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    header {
+      min-height: 420px;
+      color: var(--white);
+      background:
+        linear-gradient(rgba(20, 15, 10, 0.62), rgba(20, 15, 10, 0.72)),
+        url("https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1600&q=80")
+        center/cover;
+    }
+
+    nav {
+      width: min(1150px, 92%);
+      margin: auto;
+      padding: 22px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      color: var(--secondary);
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .cart-button {
+      position: relative;
+      border: none;
+      border-radius: 8px;
+      padding: 11px 16px;
+      background: var(--secondary);
+      color: var(--dark);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .cart-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 21px;
+      height: 21px;
+      margin-left: 5px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: var(--white);
+      font-size: 0.75rem;
+    }
+
+    .hero {
+      width: min(900px, 92%);
+      margin: 65px auto 0;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+      line-height: 1.05;
+      margin-bottom: 14px;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin: auto;
+      font-size: 1.1rem;
+      color: #f5f5f5;
+    }
+
+    .hero a {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 13px 23px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    main {
+      width: min(1150px, 92%);
+      margin: 55px auto;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .section-heading h2 {
+      font-size: 2rem;
+      color: var(--primary);
+    }
+
+    .section-heading p {
+      color: var(--muted);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .filter-button {
+      padding: 10px 16px;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      background: var(--white);
+      color: var(--dark);
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .filter-button:hover,
+    .filter-button.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    .search-box {
+      width: min(420px, 100%);
+      padding: 11px 15px;
+      border: 1px solid #d6d6d6;
+      border-radius: 8px;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    .search-box:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(184, 67, 29, 0.14);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+    }
+
+    .menu-card {
+      overflow: hidden;
+      border-radius: 14px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .menu-card img {
+      display: block;
+      width: 100%;
+      height: 185px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 17px;
+    }
+
+    .menu-title-row {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .menu-title-row h3 {
+      font-size: 1.16rem;
+      line-height: 1.25;
+    }
+
+    .price {
+      color: var(--primary);
+      font-size: 1.08rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .description {
+      min-height: 48px;
+      margin: 10px 0 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+
+    .tag {
+      border-radius: 20px;
+      padding: 4px 9px;
+      background: #f2f2f2;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .veg {
+      background: #e4f6e7;
+      color: var(--green);
+    }
+
+    .spicy {
+      background: #ffe3dc;
+      color: #bb2d16;
+    }
+
+    .add-button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 7px;
+      background: var(--dark);
+      color: var(--white);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .add-button:hover {
+      background: var(--primary);
+    }
+
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 70px;
+      padding: 38px;
+      border-radius: 15px;
+      background: #2b241f;
+      color: var(--white);
+    }
+
+    .about h2 {
+      margin-bottom: 12px;
+      color: var(--secondary);
+    }
+
+    .about p {
+      color: #e8e2de;
+    }
+
+    .details p {
+      margin-bottom: 9px;
+    }
+
+    footer {
+      padding: 25px;
+      background: var(--dark);
+      color: #d5d5d5;
+      text-align: center;
+    }
+
+    .cart-panel {
+      position: fixed;
+      z-index: 10;
+      top: 0;
+      right: -420px;
+      width: min(400px, 100%);
+      height: 100vh;
+      padding: 25px;
+      overflow-y: auto;
+      background: var(--white);
+      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
+      transition: right 0.3s ease;
+    }
+
+    .cart-panel.open {
+      right: 0;
+    }
+
+    .cart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .cart-header h2 {
+      color: var(--primary);
+    }
+
+    .close-cart {
+      border: none;
+      background: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 0;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .cart-item h4 {
+      margin-bottom: 4px;
+    }
+
+    .remove-button {
+      margin-top: 7px;
+      padding: 4px 8px;
+      border: none;
+      border-radius: 4px;
+      background: #ffe2dc;
+      color: #b32a19;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      margin: 22px 0;
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .checkout-button {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      background: var(--primary);
+      color: var(--white);
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .empty-cart {
+      color: var(--muted);
+      text-align: center;
+      padding: 35px 0;
+    }
+
+    @media (max-width: 700px) {
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links {
+        order: 3;
+      }
+
+      .hero {
+        margin-top: 40px;
+      }
+
+      .about {
+        grid-template-columns: 1fr;
+        padding: 26px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .nav-links {
+        gap: 12px;
+        font-size: 0.9rem;
+      }
+
+      .cart-button {
+        padding: 9px 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header id="home">
+    <nav>
+      <div class="logo">SPICE GARDEN</div>
+
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#about">Contact</a></li>
+      </ul>
+
+      <button class="cart-button" id="openCartButton">
+        Cart <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </nav>
+
+    <div class="hero">
+      <h1>Fresh Flavours, Made With Love</h1>
+      <p>
+        Enjoy authentic Indian dishes, aromatic spices, and memorable meals
+        prepared fresh for you.
+      </p>
+      <a href="#menu">Explore Our Menu</a>
+    </div>
+  </header>
+
+  <main>
+    <section id="menu">
+      <div class="section-heading">
+        <h2>Our Menu</h2>
+        <p>Choose your favourite dishes from our freshly prepared selection.</p>
+      </div>
+
+      <div class="controls">
+        <button class="filter-button active" data-category="all">All</button>
+        <button class="filter-button" data-category="starters">Starters</button>
+        <button class="filter-button" data-category="mains">Main Course</button>
+        <button class="filter-button" data-category="desserts">Desserts</button>
+        <button class="filter-button" data-category="drinks">Drinks</button>
+        <input
+          class="search-box"
+          id="searchBox"
+          type="text"
+          placeholder="Search menu items..."
+        />
+      </div>
+
+      <div class="menu-grid" id="menuGrid">
+        <article class="menu-card" data-category="starters">
+          <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=700&q=80" alt="Samosa platter" />
+          <div class="card-content">
+            <div class="menu-title-row">
+              <h3>Crispy Veg Samosa</h3>
+              <span class="price">₹149</span>
+            </div>
+            <p class="description">Golden pastry filled with potatoes, peas, and traditional spices.</p>
+            <div class="tags">
+              <span class="tag veg">● Vegetarian</span>
+            </div>
+            <button class="add-button" data-name="Crispy Veg Samosa" data-price="149">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="menu-card" data-category="starters">
+          <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=700&q=80" alt="Chicken tikka" />
+          <div class="card-content">
+            <div class="menu-title-row">
+              <h3>Chicken Tikka</h3>
+              <span class="price">₹299</span>
+            </div>
+            <p class="description">Tender grilled chicken marinated with yogurt and signature spices.</p>
+            <div class="tags">
+              <span class="tag spicy">🌶 Spicy</span>
+            </div>
+            <button class="add-button" data-name="Chicken Tikka" data-price="299">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="menu-card" data-category="mains">
+          <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=700&q=80" alt="Paneer butter masala" />
+          <div class="card-content">
+            <div class="menu-title-row">
+              <h3>Paneer Butter Masala</h3>
+              <span class="price">₹349</span>
+            </div>
+            <p class="description">Soft paneer cubes in a rich, creamy tomato and butter gravy.</p>
+            <div class="tags">
+              <span class="tag veg">● Vegetarian</span>
+            </div>
+            <button class="add-button" data-name="Paneer Butter Masala" data-price="349">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="menu-card" data-category="mains">
+          <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=700&q=80" alt="Butter chicken" />
+          <div class="card-content">
+            <div class="menu-title-row">
+              <h3>Butter Chicken</h3>
+              <span class="price">₹399</span>
+            </div>
+            <p class="description">Char-grilled chicken in a smooth, mildly spiced tomato-butter sauce.</p>
+            <div class="tags">
+              <span class="tag">Chef's Special</span>
+            </div>
+            <button class="add-button" data-name="Butter Chicken" data-price="399">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="menu-card" data-category="mains">
+          <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=700&q=80" alt="Vegetable biryani" />
+          <div class="card-content">
+            <div class="menu-title-row">
+              <h3>Vegetable Biryani</h3>
+              <span class="price">₹329</span>
+            </div>
+            <p class="description">Fragrant basmati rice cooked with vegetables, herbs, and saffron.</p>
+            <div class="tags">
+              <span class="tag veg">● Vegetarian</span>
+              <span class="tag spicy">🌶 Spicy</span>
+            </div>
+            <button class="add-button" data-name="Vegetable Biryani" data-price="329">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="menu-card" data-category="desserts">
+          <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=700&q=80" alt="Gulab jamun dessert" />
+          <div class="card-content">
+            <div class="menu-title-row">
+              <h3>Gulab Jamun</h3>
+              <span class="price">₹129</span>
+            </div>
+            <p class="description">Warm milk dumplings served in sweet cardamom sugar syrup.</p>
+            <div class="tags">
+              <span class="tag veg">● Vegetarian</span>
+            </div>
+            <button class="add-button" data-name="Gulab Jamun" data-price="129">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="menu-card" data-category="drinks">
+          <img src="https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?auto=format&fit=crop&w=700&q=80" alt="Mango lassi" />
+          <div class="card-content">
+            <div class="menu-title-row">
+              <h3>Mango Lassi</h3>
+              <span class="price">₹119</span>
+            </div>
+            <p class="description">A chilled yogurt drink blended with ripe mango and a touch of cardamom.</p>
+            <div class="tags">
+              <span class="tag veg">● Vegetarian</span>
+            </div>
+            <button class="add-button" data-name="Mango Lassi" data-price="119">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="menu-card" data-category="drinks">
+          <img src="https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&w=700&q=80" alt="Masala chai" />
+          <div class="card-content">
+            <div class="menu-title-row">
+              <h3>Masala Chai</h3>
+              <span class="price">₹79</span>
+            </div>
+            <p class="description">Traditional Indian tea brewed with milk, ginger, and aromatic spices.</p>
+            <div class="tags">
+              <span class="tag veg">● Vegetarian</span>
+            </div>
+            <button class="add-button" data-name="Masala Chai" data-price="79">Add to Cart</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div>
+        <h2>Welcome to Spice Garden</h2>
+        <p>
+          Spice Garden brings together traditional recipes, fresh ingredients,
+          and warm hospitality. Join us for lunch, dinner, family celebrations,
+          or a delicious takeaway meal.
+        </p>
+      </div>
+
+      <div class="details">
+        <p><strong>📍 Address:</strong> 123 Food Street, Your City</p>
+        <p><strong>📞 Phone:</strong> +91 98765 43210</p>
+        <p><strong>✉ Email:</strong> hello@spicegarden.com</p>
+        <p><strong>🕒 Hours:</strong> 11:00 AM – 11:00 PM, Every Day</p>
+      </div>
+    </section>
+  </main>
+
+  <aside class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+      <h2>Your Order</h2>
+      <button class="close-cart" id="closeCartButton" aria-label="Close cart">&times;</button>
+    </div>
+
+    <div id="cartItems">
+      <p class="empty-cart">Your cart is empty.</p>
+    </div>
+
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotal">₹0</span>
+    </div>
+
+    <button class="checkout-button" id="checkoutButton">Place Order</button>
+  </aside>
+
+  <footer>
+    <p>© 2026 Spice Garden Restaurant. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const filterButtons = document.querySelectorAll(".filter-button");
+    const menuCards = document.querySelectorAll(".menu-card");
+    const searchBox = document.getElementById("searchBox");
+
+    const cart = [];
+    const cartPanel = document.getElementById("cartPanel");
+    const cartItems = document.getElementById("cartItems");
+    const cartCount = document.getElementById("cartCount");
+    const cartTotal = document.getElementById("cartTotal");
+
+    let selectedCategory = "all";
+
+    function filterMenu() {
+      const searchText = searchBox.value.toLowerCase().trim();
+
+      menuCards.forEach((card) => {
+        const category = card.dataset.category;
+        const itemName = card.querySelector("h3").textContent.toLowerCase();
+        const itemDescription = card.querySelector(".description").textContent.toLowerCase();
+
+        const categoryMatch =
+          selectedCategory === "all" || category === selectedCategory;
+
+        const searchMatch =
+          itemName.includes(searchText) || itemDescription.includes(searchText);
+
+        card.style.display = categoryMatch && searchMatch ? "block" : "none";
+      });
+    }
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        filterButtons.forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        selectedCategory = button.dataset.category;
+        filterMenu();
+      });
+    });
+
+    searchBox.addEventListener("input", filterMenu);
+
+    document.querySelectorAll(".add-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const name = button.dataset.name;
+        const price = Number(button.dataset.price);
+
+        const existingItem = cart.find((item) => item.name === name);
+
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({ name, price, quantity: 1 });
+        }
+
+        updateCart();
+        cartPanel.classList.add("open");
+      });
+    });
+
+    function updateCart() {
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const totalPrice = cart.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
+
+      cartCount.textContent = totalItems;
+      cartTotal.textContent = `₹${totalPrice}`;
+
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p class="empty-cart">Your cart is empty.</p>';
+        return;
+      }
+
+      cartItems.innerHTML = cart
+        .map(
+          (item, index) => `
+            <div class="cart-item">
+              <div>
+                <h4>${item.name}</h4>
+                <p>₹${item.price} × ${item.quantity}</p>
+                <button class="remove-button" onclick="removeItem(${index})">
+                  Remove
+                </button>
+              </div>
+              <strong>₹${item.price * item.quantity}</strong>
+            </div>
+          `
+        )
+        .join("");
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      updateCart();
+    }
+
+    document.getElementById("openCartButton").addEventListener("click", () => {
+      cartPanel.classList.add("open");
+    });
+
+    document.getElementById("closeCartButton").addEventListener("click", () => {
+      cartPanel.classList.remove("open");
+    });
+
+    document.getElementById("checkoutButton").addEventListener("click", () => {
+      if (cart.length === 0) {
+        alert("Your cart is empty. Please add an item first.");
+        return;
+      }
+
+      alert("Thank you! Your order has been placed successfully.");
+      cart.length = 0;
+      updateCart();
+      cartPanel.classList.remove("open");
+    });
+  </script>
+</body>
+</html>
