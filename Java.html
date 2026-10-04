@@ -1,0 +1,58 @@
+public class Main {
+    public static void main(String[] args) {
+
+        // int[] array; declaration
+        int[] array = {1, 2, 3, 4, 5}; // initialization
+
+        System.out.println(array); // it will print reference
+
+        // traversal
+        for (int i = 0; i < array.length; i++) {
+            System.out.println("array values: " + array[i]);
+        }
+
+        // sum of array
+        int sum = 0;
+        for (int i = 0; i < array.length; i++) {
+            sum = sum + array[i];
+        }
+        System.out.println("Sum: " + sum);
+
+        // sub of array
+        int sub = 0;
+        for (int i = 0; i < array.length; i++) {
+            sub = sub - array[i];
+        }
+        System.out.println("Sub: " + sub);
+
+        // mul of array
+        int mul = 1;
+        for (int i = 0; i < array.length; i++) {
+            mul = mul * array[i];
+        }
+        System.out.println("Mul: " + mul);
+
+        // even numbers
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] % 2 == 0) {
+                System.out.println("Even: " + array[i]);
+            }
+        }
+
+        // odd numbers
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] % 2 != 0) {
+                System.out.println("Odd: " + array[i]);
+            }
+        }
+
+        // odd numbers using while loop
+        int i = 0;
+        while (i < array.length) {
+            if (array[i] % 2 != 0) {
+                System.out.println("Odd using while: " + array[i]);
+            }
+            i++;
+        }
+    }
+}
